@@ -1,0 +1,43 @@
+alias sb='source ~/.bashrc && echo source bash: ok'
+alias cdv-and-v='cd ~/Documents/V-and-V/'
+
+alias submodule_status='git submodule foreach git status'
+alias submodule_clean='git submodule foreach git clean -xdf'
+alias mkcdir='mkdir build && cd build'
+
+function list_modified_file() {
+    sed 's|\(modified: \)\(.*\)|\2|g'
+}
+
+alias code_modified='code $(git st | grep modified | list_modified_file)'
+
+function mergedBranches() {
+    grep -vE "master|main" >/tmp/merged-branches
+}
+
+alias delete_local_branch_merge='git branch --merged | mergedBranches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches'
+
+git config --global alias.st status
+git config --global alias.br branch
+git config --global alias.co checkout
+
+pull_submodule_master_main() {
+    listOfBranch=("master" "main")
+    listOfSubmodule=($(git submodule | sed -e 's|[^\w][^ ]* \(.*\) .*|\1|g'))
+    rootSubmodulePath=$(pwd)
+    echo ${listOfSubmodule[@]}
+    for subs in ${listOfSubmodule[@]}; do
+        echo "*************************************"
+        echo "Entering into ${subs}" && cd "${subs}"
+        for branchName in ${listOfBranch[@]}; do
+            git show-ref --verify --quiet refs/heads/${branchName}
+            if [ $? == "0" ]; then
+                git checkout -q ${branchName}
+                git pull
+            fi
+        done
+        echo "Exit from ${subs} and go to $(cd -)"
+        cd "${rootSubmodulePath}"
+        echo "*************************************"
+    done
+}
