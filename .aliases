@@ -41,3 +41,8 @@ pull_submodule_master_main() {
         echo "*************************************"
     done
 }
+
+#ROS aliases
+alias cdros='cd ~/ros2_ws'
+alias ros_build='. ros_build.sh'
+alias ros_clean='./clean.sh'
