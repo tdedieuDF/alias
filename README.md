@@ -3,7 +3,9 @@ Alias repository to avoid duplicated aliases on multi machine
 
 ## Clone
 
+```bash
 git clone https://github.com/tdedieuDF/alias.git .custom_aliases
+```
 
 ## Put your custom aliases into your bashrc
 
