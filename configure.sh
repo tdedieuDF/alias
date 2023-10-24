@@ -1,3 +1,3 @@
 #/usr/bin bash
 
-echo -e "\nif [ -f ~/.custom_aliases/.aliases ]; then\n    . ~/.custom_aliases/.aliases\nfi" >> ~/.bashrc
+echo -e "\nif [ -f $(pwd)/.aliases ]; then\n    . $(pwd)/.aliases\nfi" >> ~/.bashrc
