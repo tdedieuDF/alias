@@ -1,5 +1,5 @@
 alias sb='source ~/.bashrc && echo source bash: ok'
-alias cdv-and-v='cd ~/Documents/V-and-V/'
+alias cdoptimate='cd ~/mnt/extention/ros2_ws/Optimate'
 alias cdjenkins='cd ~/Documents/Jenkins'
 
 alias submodule_status='git submodule foreach git status'
@@ -17,10 +17,13 @@ function mergedBranches() {
 }
 
 alias delete_local_branch_merge='git branch --merged | mergedBranches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches'
+alias delete_local_branch_not_merged='git fetch -p && git branch -vv | awk "/: gone]/{print $1}" | xargs git branch -d'
+
 
 git config --global alias.st status
 git config --global alias.br branch
 git config --global alias.co checkout
+git config --global status.submoduleSummary 1
 
 pull_submodule_master_main() {
     listOfBranch=("master" "main")
@@ -49,6 +52,7 @@ alias ros_build='. ros_build.sh'
 alias ros_clean='./clean.sh'
 
 alias antora='npx antora'
+alias my_rcp='rclone --multi-thread-streams 16 copyto -vv'
 
 force_color_prompt=yes
 
@@ -73,3 +77,5 @@ else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w \[\033[00;32m\]$(git_branch)\[\033[00m\]\$\n'
 fi
 unset color_prompt force_color_prompt
+
+alias cdoptimate='cd /media/optimate/extention/ros2_ws/Optimate'
