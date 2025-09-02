@@ -1,10 +1,13 @@
 alias sb='source ~/.bashrc && echo source bash: ok'
-alias cdoptimate='cd ~/mnt/extention/ros2_ws/Optimate'
+alias cdoptimate='cd /mnt/extention/ros2_ws/Optimate'
 alias cdjenkins='cd ~/Documents/Jenkins'
 
 alias submodule_status='git submodule foreach git status'
 alias submodule_clean='git submodule foreach git clean -xdf'
 alias mkcdir='mkdir build && cd build'
+
+user_name=$(git config user.name)
+alias git_token='cat ~/.git-credentials | grep -E $user_name | sed -e "s|https://$user_name:\(.*\)@github.com|\1|g"'
 
 function list_modified_file() {
     sed 's|\(modified: \)\(.*\)|\2|g'
@@ -17,7 +20,12 @@ function mergedBranches() {
 }
 
 alias delete_local_branch_merge='git branch --merged | mergedBranches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches'
-alias delete_local_branch_not_merged='git fetch -p && git branch -vv | awk "/: gone]/{print $1}" | xargs git branch -d'
+alias delete_local_branch_merge_force='git branch --merged | mergedBranches && xargs git branch -d </tmp/merged-branches'
+alias delete_local_branch_not_merged='git branch --no-merged >/tmp/no-merged-branches && xargs git branch -D </tmp/no-merged-branches'
+function delete_local_branch_not_merged_force
+{
+    git fetch -p && git branch -vv | gawk '/: gone]/{print $1}' | xargs git branch -D
+}
 
 
 git config --global alias.st status
@@ -77,5 +85,3 @@ else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w \[\033[00;32m\]$(git_branch)\[\033[00m\]\$\n'
 fi
 unset color_prompt force_color_prompt
-
-alias cdoptimate='cd /media/optimate/extention/ros2_ws/Optimate'
